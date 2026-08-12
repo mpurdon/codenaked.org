@@ -1,0 +1,37 @@
+/* Two-layer design tokens: raw palette first, semantic aliases second.
+   Build UI against the semantic layer only — never reach for --raw-* in
+   components. Palette values are eyedropped from the poster art. */
+
+:root {
+  /* --- raw palette ------------------------------------------------------ */
+  --raw-ink: #08060d;
+  --raw-ink-lift: #14101f;
+  --raw-magenta: #ec1e8c;
+  --raw-cyan: #3fc9e8;
+  --raw-yellow: #ffe11c;
+  --raw-violet: #6b3f8f;
+  --raw-chalk: #f4eef7;
+  --raw-chalk-dim: #a99cb5;
+
+  /* --- semantic aliases ------------------------------------------------- */
+  --bg-base: var(--raw-ink);
+  --bg-bloom-a: color-mix(in srgb, var(--raw-magenta) 22%, transparent);
+  --bg-bloom-b: color-mix(in srgb, var(--raw-cyan) 16%, transparent);
+  --bg-bloom-c: color-mix(in srgb, var(--raw-violet) 26%, transparent);
+
+  --text-primary: var(--raw-chalk);
+  --text-muted: var(--raw-chalk-dim);
+  --text-accent: var(--raw-cyan);
+  --text-accent-hover: var(--raw-yellow);
+
+  --rule: color-mix(in srgb, var(--raw-chalk) 12%, transparent);
+  --focus-ring: var(--raw-yellow);
+
+  --poster-glow: color-mix(in srgb, var(--raw-magenta) 34%, transparent);
+  --poster-glow-cool: color-mix(in srgb, var(--raw-cyan) 22%, transparent);
+
+  /* --- scale ------------------------------------------------------------ */
+  --gap-page: clamp(1rem, 4vw, 2.5rem);
+  --font-ui: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+}

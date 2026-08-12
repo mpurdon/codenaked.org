@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+  <img
+    class="poster"
+    src="/images/poster.webp"
+    srcset="/images/poster-640.webp 640w, /images/poster.webp 1024w"
+    sizes="(max-width: 700px) 92vw, min(1024px, 57vh)"
+    width="1024"
+    height="1536"
+    alt="Coed Naked Coding — a neon 1980s poster of two coders at a beige desktop computer surrounded by pizza, floppy disks and coffee. Tagline: play with your bits, then commit. No protection. Straight to production."
+    fetchpriority="high"
+    decoding="async"
+  />
+</Layout>

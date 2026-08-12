@@ -1,0 +1,133 @@
+/* Reset + the whole site. One poster, one footer — that is the entire UI. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: var(--bg-base);
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  /* Definite height, not min-height: the poster's max-height:100% only
+     resolves if every ancestor up to <body> has a height to measure against.
+     100svh so mobile browser chrome can't push the footer off-screen. */
+  height: 100vh;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  /* Neon bloom behind everything, echoing the poster's airbrushed edges. */
+  background-image:
+    radial-gradient(ellipse 70% 55% at 50% 8%, var(--bg-bloom-a), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 12% 88%, var(--bg-bloom-b), transparent 72%),
+    radial-gradient(ellipse 65% 60% at 88% 78%, var(--bg-bloom-c), transparent 74%);
+  background-attachment: fixed;
+}
+
+/* --- stage ---------------------------------------------------------------
+   Flex child that owns the leftover viewport height. min-height:0 is what
+   lets the poster's max-height:100% actually resolve against it. */
+.stage {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  /* minmax(0, 1fr) rather than bare auto tracks: an auto track sizes to the
+     poster's 1024x1536 max-content and blows past the viewport on narrow
+     screens, which is what makes the image's max-width:100% look ignored. */
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  place-items: center;
+  padding: var(--gap-page);
+}
+
+.poster {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--raw-chalk) 8%, transparent),
+    0 0 60px -12px var(--poster-glow),
+    0 0 120px -30px var(--poster-glow-cool),
+    0 24px 60px -24px rgb(0 0 0 / 0.85);
+}
+
+/* --- footer -------------------------------------------------------------- */
+footer {
+  padding: 1rem var(--gap-page) calc(1rem + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--rule);
+  text-align: center;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+footer p {
+  margin: 0;
+}
+
+footer .sep {
+  margin: 0 0.5em;
+  opacity: 0.5;
+}
+
+a {
+  color: var(--text-accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--text-accent) 40%, transparent);
+  transition: color 120ms ease, border-color 120ms ease;
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--text-accent-hover);
+  border-bottom-color: var(--text-accent-hover);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* --- 404 ----------------------------------------------------------------- */
+.notfound {
+  text-align: center;
+  max-width: 40ch;
+}
+
+.notfound h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(2.5rem, 12vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--raw-magenta);
+  text-shadow: 3px 3px 0 var(--raw-cyan);
+}
+
+.notfound p {
+  margin: 0 0 1.5rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}
