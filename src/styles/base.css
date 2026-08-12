@@ -89,20 +89,22 @@ footer .sep {
   opacity: 0.5;
 }
 
-/* Icon link: no underline (it would run under the mark), and the svg rides on
-   the text baseline via inline-flex rather than a magic vertical-align nudge. */
+/* Icon link. Deliberately NOT inline-flex: an inline-flex box takes its
+   baseline from its flex items, so `align-items: center` with a 14px mark in
+   12px text lifted the whole anchor 3px off the footer's baseline. Staying in
+   normal inline flow keeps the label on the same baseline as the text beside
+   it, and the mark is placed with vertical-align instead. */
 .gh {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4em;
   border-bottom: 0;
+  white-space: nowrap;
 }
 
 .gh svg {
-  flex: none;
-  /* Optical alignment — the mark's round bounding box sits a touch high
-     against uppercase letterforms. */
-  transform: translateY(-0.5px);
+  /* Centres the 14px mark on the ~8.6px cap-height band of the 12px uppercase
+     text: half the cap height, less half the icon, in em so it tracks the
+     font-size. */
+  vertical-align: -0.22em;
+  margin-right: 0.4em;
 }
 
 .gh span {
