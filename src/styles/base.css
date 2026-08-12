@@ -59,7 +59,14 @@ body {
 .poster {
   display: block;
   max-width: 100%;
-  max-height: 100%;
+  /* Height ceiling in viewport units, NOT max-height:100%. The percentage
+     version has to resolve against a grid area inside a flex-sized parent,
+     and WebKit resolves that chain more conservatively than Blink — Safari
+     rendered the poster visibly smaller than Chrome/Arc at the same window
+     size. An explicit length resolves identically in every engine.
+     Keep this in sync with the footer: viewport - footer - stage padding. */
+  max-height: calc(100vh - var(--footer-h) - 2 * var(--gap-page));
+  max-height: calc(100svh - var(--footer-h) - 2 * var(--gap-page));
   width: auto;
   height: auto;
   object-fit: contain;

@@ -32,6 +32,11 @@
 
   /* --- scale ------------------------------------------------------------ */
   --gap-page: clamp(1rem, 4vw, 2.5rem);
+  /* Measured footer height: 0.75rem line + 1rem padding top and bottom + 1px
+     rule = 48px. Only used to compute the poster's height ceiling — the footer
+     itself stays auto-height, so it can still grow if the text wraps.
+     The safe-area term keeps the two in step on notched phones. */
+  --footer-h: calc(3rem + env(safe-area-inset-bottom, 0px));
   --font-ui: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
 }

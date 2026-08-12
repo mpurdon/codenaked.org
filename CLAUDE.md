@@ -25,20 +25,31 @@ The entire site is the poster art plus a one-line footer. Resist growing it.
 
 ## The height chain
 
-The poster fills the viewport minus the footer. That only works because every
-ancestor has a resolvable height — if you touch this, re-check all three:
+The poster fills the viewport minus the footer. Four rules make that work in
+every engine — if you touch one, re-check all of them:
 
-1. `body { height: 100svh }` — a *definite* height, not `min-height`. With
-   `min-height` the poster's `max-height: 100%` has nothing to resolve against
-   and the footer gets pushed below the fold.
+1. `body { height: 100svh }` — a *definite* height, not `min-height`, so the
+   footer can't be pushed below the fold.
 2. `.stage { flex: 1; min-height: 0 }` — `min-height: 0` lets the flex child
    shrink below its content size.
 3. `.stage { grid-template: minmax(0, 1fr) / minmax(0, 1fr) }` — bare `auto`
    tracks size to the poster's 1024×1536 max-content and overflow narrow
    viewports, which makes the image's `max-width: 100%` look broken.
+4. **The poster's height ceiling is a viewport-unit `calc()`, never
+   `max-height: 100%`.** The percentage form has to resolve against a grid area
+   inside a flex-sized parent, and WebKit resolves that chain more
+   conservatively than Blink — Safari rendered the poster visibly smaller than
+   Chrome/Arc at the same window size. An explicit length computes identically
+   everywhere.
 
 `100svh` (small viewport height) is deliberate: mobile browser chrome must not
 be able to push the footer off-screen.
+
+`--footer-h` in `tokens.css` must stay in step with the footer's real height
+(currently 48px = 0.75rem line + 1rem padding ×2 + 1px rule), since rule 4
+subtracts it. The footer itself is still auto-height, so it can grow when the
+text wraps on narrow screens — that's safe, because the poster is
+width-constrained there and can't overflow.
 
 ## The poster is die-cut — do not flatten it
 
