@@ -18,6 +18,10 @@ The entire site is the poster art plus a one-line footer. Resist growing it.
   site is one uppercase letter-spaced footer line.
 - JS: none. The copyright year is stamped at build time in `Layout.astro`, so
   it refreshes on every deploy without a client script.
+- Icons: the footer's GitHub mark is inline SVG (octicons `mark-github-16`)
+  filled with `currentColor`, so it inherits the link colour and hover state
+  and costs no extra request. Keep it that way — the page should fetch nothing
+  but the HTML document and the poster.
 
 ## The height chain
 

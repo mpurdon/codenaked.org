@@ -89,6 +89,26 @@ footer .sep {
   opacity: 0.5;
 }
 
+/* Icon link: no underline (it would run under the mark), and the svg rides on
+   the text baseline via inline-flex rather than a magic vertical-align nudge. */
+.gh {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  border-bottom: 0;
+}
+
+.gh svg {
+  flex: none;
+  /* Optical alignment — the mark's round bounding box sits a touch high
+     against uppercase letterforms. */
+  transform: translateY(-0.5px);
+}
+
+.gh span {
+  border-bottom: 1px solid color-mix(in srgb, currentColor 40%, transparent);
+}
+
 a {
   color: var(--text-accent);
   text-decoration: none;
