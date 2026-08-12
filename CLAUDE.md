@@ -35,12 +35,20 @@ every engine — if you touch one, re-check all of them:
 3. `.stage { grid-template: minmax(0, 1fr) / minmax(0, 1fr) }` — bare `auto`
    tracks size to the poster's 1024×1536 max-content and overflow narrow
    viewports, which makes the image's `max-width: 100%` look broken.
-4. **The poster's height ceiling is a viewport-unit `calc()`, never
-   `max-height: 100%`.** The percentage form has to resolve against a grid area
-   inside a flex-sized parent, and WebKit resolves that chain more
-   conservatively than Blink — Safari rendered the poster visibly smaller than
-   Chrome/Arc at the same window size. An explicit length computes identically
-   everywhere.
+4. **The poster's `width` is stated explicitly — never `auto`, never sized by
+   `max-height` alone.** This is the subtle one. With `srcset` + `w`
+   descriptors, an image's *intrinsic size is derived from the `sizes`
+   attribute*, so `width: auto` quietly hands layout control to `sizes`. Blink
+   recomputes that on resize; WebKit does not — so in Safari the poster
+   ratcheted smaller each time the window shrank and only sprang back on
+   reload. The width is now `min()` of the three things that can run out
+   first: the stage width, the leftover viewport height converted through the
+   2:3 aspect, and the art's native 1024px.
+5. **`sizes` is a download hint and nothing more.** Keep it plain lengths —
+   math functions like `min()` are parsed inconsistently in the `sizes`
+   microsyntax. Getting it wrong should cost one resolution step, never a
+   layout change. If it ever appears to affect layout again, rule 4 has been
+   broken.
 
 `100svh` (small viewport height) is deliberate: mobile browser chrome must not
 be able to push the footer off-screen.

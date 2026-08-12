@@ -56,19 +56,22 @@ body {
    pixels. Glow must come from drop-shadow(), which follows the alpha channel;
    box-shadow would trace the rectangular bounding box and expose the cut.
    For the same reason: no border-radius, no ring, no background. */
+/* Size is stated ENTIRELY in CSS — never left to the intrinsic size.
+   With srcset + `w` descriptors an image's intrinsic size is derived from the
+   `sizes` attribute, so `width: auto` silently hands layout control to `sizes`.
+   Blink recomputes that on resize; WebKit does not, so the poster ratcheted
+   smaller as you resized down and only sprang back on reload. Stating width
+   explicitly makes `sizes` a pure download hint, which is all it should be.
+
+   The three terms are the three things that can run out first: the stage's
+   width, the viewport height left over after the footer and padding (converted
+   to a width via the 2:3 aspect), and the art's own native width. */
 .poster {
   display: block;
-  max-width: 100%;
-  /* Height ceiling in viewport units, NOT max-height:100%. The percentage
-     version has to resolve against a grid area inside a flex-sized parent,
-     and WebKit resolves that chain more conservatively than Blink — Safari
-     rendered the poster visibly smaller than Chrome/Arc at the same window
-     size. An explicit length resolves identically in every engine.
-     Keep this in sync with the footer: viewport - footer - stage padding. */
-  max-height: calc(100vh - var(--footer-h) - 2 * var(--gap-page));
-  max-height: calc(100svh - var(--footer-h) - 2 * var(--gap-page));
-  width: auto;
+  width: min(100%, (100vh - var(--footer-h) - 2 * var(--gap-page)) * 2 / 3, 1024px);
+  width: min(100%, (100svh - var(--footer-h) - 2 * var(--gap-page)) * 2 / 3, 1024px);
   height: auto;
+  aspect-ratio: 1024 / 1536;
   object-fit: contain;
   filter:
     drop-shadow(0 0 24px var(--poster-glow))
