@@ -52,6 +52,10 @@ body {
   padding: var(--gap-page);
 }
 
+/* The poster art is die-cut — an irregular outline with ~18% transparent
+   pixels. Glow must come from drop-shadow(), which follows the alpha channel;
+   box-shadow would trace the rectangular bounding box and expose the cut.
+   For the same reason: no border-radius, no ring, no background. */
 .poster {
   display: block;
   max-width: 100%;
@@ -59,12 +63,10 @@ body {
   width: auto;
   height: auto;
   object-fit: contain;
-  border-radius: 4px;
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--raw-chalk) 8%, transparent),
-    0 0 60px -12px var(--poster-glow),
-    0 0 120px -30px var(--poster-glow-cool),
-    0 24px 60px -24px rgb(0 0 0 / 0.85);
+  filter:
+    drop-shadow(0 0 24px var(--poster-glow))
+    drop-shadow(0 0 60px var(--poster-glow-cool))
+    drop-shadow(0 12px 28px rgb(0 0 0 / 0.7));
 }
 
 /* --- footer -------------------------------------------------------------- */
